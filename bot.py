@@ -243,18 +243,39 @@ async def send_support_message(callback: CallbackQuery):
     )
 
 
-# ---- ОБРАБОТЧИК КНОПКИ "СКАЧАТЬ" ----
-@dp.callback_query(F.data.startswith("download_"))
-async def handle_download(callback: CallbackQuery):
-    """Обрабатывает нажатие кнопки Скачать"""
-    # Получаем тип материала из callback_data
-    material_type = callback.data.replace("download_", "")
+# ---- МАТЕРИАЛЫ ----
+@dp.callback_query(F.data == "materials")
+async def show_materials(callback: CallbackQuery):
+    formatted_text = Text(
+        Bold("Отлично!"), " Я не психолог, но могу поделиться несколькими вещами, которые помогут:\n\n",
+        "• Почитать про отношения\n",
+        "• Методику «5 почему»\n",
+        "• Чек-лист для разговора\n\n",
+        Italic("Выбери, что тебе интересно:")
+    )
     
-    # Отправляем поддерживающее сообщение
-    await send_support_message(callback)
-    
-    # Отвечаем на callback, чтобы убрать "часики" на кнопке
+    await callback.message.answer(
+        formatted_text.as_html(),
+        parse_mode="HTML",
+        reply_markup=materials_kb
+    )
     await callback.answer()
+
+
+# ---- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ СООБЩЕНИЯ ПОДДЕРЖКИ ----
+async def send_support_message(callback: CallbackQuery):
+    """Отправляет поддерживающее сообщение"""
+    support_text = Text(
+        "Надеюсь, что-то из этого тебе пригодится. Помни: ты не один(на) в том, что чувствуешь. И тот факт, что ты вообще задумался(ась) об этом и ищешь способы что-то изменить — это уже огромный шаг. 🌱\n\n",
+        "На нашем сайте ", Bold("«ДИАЛОГ.РЯДОМ»"), " говорят о тишине в отношениях.\n",
+        "Загляни сюда, когда будет время: ", Bold("https://dialog-ryadom.tilda.ws"), "\n\n",
+        "Спасибо, что был(а) здесь. Правда 💛"
+    )
+    
+    await callback.message.answer(
+        support_text.as_html(),
+        parse_mode="HTML"
+    )
 
 
 # ---- МАТЕРИАЛЫ: ГАЙД ----
@@ -270,6 +291,9 @@ async def guide(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("guide")
     )
+    
+    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
+    await send_support_message(callback)
     await callback.answer()
 
 
@@ -286,6 +310,9 @@ async def five_whys(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("five_whys")
     )
+    
+    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
+    await send_support_message(callback)
     await callback.answer()
 
 
@@ -302,6 +329,9 @@ async def checklist(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("checklist")
     )
+    
+    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
+    await send_support_message(callback)
     await callback.answer()
 
 
