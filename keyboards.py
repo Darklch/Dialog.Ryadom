@@ -53,8 +53,10 @@ materials_kb = InlineKeyboardMarkup(
 )
 
 def material_buttons(material_type: str):
+    """Кнопки для каждого материала (с ссылкой на скачивание)"""
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="⬅️ Назад к материалам", callback_data="materials")]
+            [InlineKeyboardButton(text="⬅️ Назад к материалам", callback_data="materials")],
+            [InlineKeyboardButton(text="📥 Скачать", url="https://dialog-ryadom.tilda.ws/materials")]
         ]
     )
