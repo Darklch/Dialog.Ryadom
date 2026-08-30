@@ -241,8 +241,7 @@ async def show_materials(callback: CallbackQuery):
 async def guide(callback: CallbackQuery):
     formatted_text = Text(
         Bold("Гайд для разговора"), "\n\n",
-        "Это простая памятка на 1 страницу, которая поможет начать сложный разговор.\n\n",
-        Italic("Гайд здесь: https://dialog-ryadom.tilda.ws/materials")
+        "Это простая памятка на 1 страницу, которая поможет начать сложный разговор."
     )
     
     await callback.message.answer(
@@ -250,6 +249,9 @@ async def guide(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("guide")
     )
+    
+    # Дополнительное сообщение после нажатия
+    await send_support_message(callback)
     await callback.answer()
 
 
@@ -258,8 +260,7 @@ async def guide(callback: CallbackQuery):
 async def five_whys(callback: CallbackQuery):
     formatted_text = Text(
         Bold("Методика «5 почему»"), "\n\n",
-        "Это инструмент, который помогает добраться до настоящей причины проблемы.\n\n",
-        Italic("Методика здесь: https://dialog-ryadom.tilda.ws/materials")
+        "Это инструмент, который помогает добраться до настоящей причины проблемы."
     )
     
     await callback.message.answer(
@@ -267,6 +268,9 @@ async def five_whys(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("five_whys")
     )
+    
+    # Дополнительное сообщение после нажатия
+    await send_support_message(callback)
     await callback.answer()
 
 
@@ -275,8 +279,7 @@ async def five_whys(callback: CallbackQuery):
 async def checklist(callback: CallbackQuery):
     formatted_text = Text(
         Bold("Чек-лист для разговора"), "\n\n",
-        "Это список из 5 вопросов, которые можно задать партнеру, чтобы лучше понять его состояние.\n\n",
-        Italic("Чек-лист здесь: https://dialog-ryadom.tilda.ws/materials")
+        "Это список из 5 вопросов, которые можно задать партнеру, чтобы лучше понять его состояние."
     )
     
     await callback.message.answer(
@@ -284,15 +287,42 @@ async def checklist(callback: CallbackQuery):
         parse_mode="HTML",
         reply_markup=material_buttons("checklist")
     )
+    
+    # Дополнительное сообщение после нажатия
+    await send_support_message(callback)
     await callback.answer()
+
+
+# ---- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ СООБЩЕНИЯ ПОДДЕРЖКИ ----
+async def send_support_message(callback: CallbackQuery):
+    """Отправляет поддерживающее сообщение после каждого материала"""
+    support_text = Text(
+        "Надеюсь, что-то из этого тебе пригодится. Помни: ты не один(на) в том, что чувствуешь. И тот факт, что ты вообще задумался(ась) об этом и ищешь способы что-то изменить — это уже огромный шаг. 🌱\n\n",
+        "На нашем сайте ", Bold("«ДИАЛОГ.РЯДОМ»"), " говорят о тишине в отношениях.\n",
+        "Загляни сюда, когда будет время: ", Bold("https://dialog-ryadom.tilda.ws/materials"), "\n\n",
+        "Спасибо, что был(а) здесь. Правда 💛"
+    )
+    
+    await callback.message.answer(
+        support_text.as_html(),
+        parse_mode="HTML"
+    )
+
 
 # ---- ПЕРЕЗАПУСК ИЗ МАТЕРИАЛОВ ----
 @dp.callback_query(F.data == "restart_from_materials")
 async def restart_from_materials(callback: CallbackQuery, state: FSMContext):
     await state.clear()
     
+    formatted_text = Text(
+        "Привет. Меня зовут ", Bold("«Рядом»"), ". Я простой бот.\n\n",
+        Bold("Давай я задам тебе 3 коротких вопроса."), " Ты выберешь варианты, которые тебе ближе всего. А в конце я предложу пару фраз, которые можно сказать партнеру при сложном разговоре.\n\n",
+        Italic("Никакой магии. Просто подсказки.")
+    )
+    
     await callback.message.answer(
-        "Давай начнем сначала! 👋",
+        formatted_text.as_html(),
+        parse_mode="HTML",
         reply_markup=start_kb
     )
     await callback.answer()
