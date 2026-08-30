@@ -286,6 +286,16 @@ async def checklist(callback: CallbackQuery):
     )
     await callback.answer()
 
+# ---- ПЕРЕЗАПУСК ИЗ МАТЕРИАЛОВ ----
+@dp.callback_query(F.data == "restart_from_materials")
+async def restart_from_materials(callback: CallbackQuery, state: FSMContext):
+    await state.clear()
+    
+    await callback.message.answer(
+        "Давай начнем сначала! 👋",
+        reply_markup=start_kb
+    )
+    await callback.answer()
 
 # ---- ЗАПУСК ----
 async def main():
