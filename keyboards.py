@@ -48,7 +48,7 @@ materials_kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(text="📖 Гайд", callback_data="guide")],
         [InlineKeyboardButton(text="❓ Методика 5 ПОЧЕМУ", callback_data="five_whys")],
         [InlineKeyboardButton(text="✅ Чек-лист", callback_data="checklist")],
-        [InlineKeyboardButton(text="🔄 Пройти тест заново", callback_data="restart")]
+        [InlineKeyboardButton(text="🔄 Пройти тест заново", callback_data="restart_from_materials")]
     ]
 )
 
