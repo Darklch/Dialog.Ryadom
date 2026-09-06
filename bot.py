@@ -292,7 +292,6 @@ async def guide(callback: CallbackQuery):
         reply_markup=material_buttons("guide")
     )
     
-    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
     await send_support_message(callback)
     await callback.answer()
 
@@ -311,7 +310,6 @@ async def five_whys(callback: CallbackQuery):
         reply_markup=material_buttons("five_whys")
     )
     
-    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
     await send_support_message(callback)
     await callback.answer()
 
@@ -330,7 +328,6 @@ async def checklist(callback: CallbackQuery):
         reply_markup=material_buttons("checklist")
     )
     
-    # ✅ Отправляем поддерживающее сообщение СРАЗУ после материала
     await send_support_message(callback)
     await callback.answer()
 
@@ -357,7 +354,6 @@ async def restart_from_materials(callback: CallbackQuery, state: FSMContext):
 # ---- ЗАПУСК ----
 async def main():
     await bot.delete_webhook(drop_pending_updates=True)
-    print("✅ Webhook удален!")
     await dp.start_polling(bot)
 
 
